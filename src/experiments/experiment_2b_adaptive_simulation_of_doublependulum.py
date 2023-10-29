@@ -1,18 +1,17 @@
 from mlpro.sl.pool.afct.fnn.pytorch.mlp import *
 import torch.nn as nn
 import torch.optim as opt
-from mlpro.sl.models_train import *
 from mlpro.sl import *
-from dataset import SASDataset
+from mt_baheti.src.experiments.dataset import SASDataset
 from mlpro.oa.systems.pool.doublependulum import *
-
+import pathlib as path
 
 # Defining global variables
 error = []
 progressive_error = []
 
 # Data Resource
-train_path = os.curdir + os.sep + "data" + os.sep + 'training_data'
+train_path = str(path.Path.cwd().parent.parent) + os.sep + "data" + os.sep + 'training_data'
 name_train_states = 'env_states.csv'
 name_train_actions = 'agent_actions.csv'
 
@@ -85,7 +84,7 @@ customAFctStrans = AFctSTrans(p_afct_cls=CustomMLP,
 
 # Getting the pre-trained model
 from mlpro.sl.models_train import SLScenario
-scenario = SLScenario.load(p_path= os.curdir + os.sep + "pre_trained_model" + os.sep + "mlp_model",
+scenario = SLScenario.load(p_path= str(path.Path.cwd().parent.parent) + os.sep + "pre_trained_model" + os.sep + "mlp_model",
                            p_filename="InferenceScenario[a75c2578-1af4-44dd-abae-4e46efb34c77].pkl")
 # Get the model
 model = scenario.get_model()._sl_model

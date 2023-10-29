@@ -1,9 +1,9 @@
 
 
-from refactored.doublependulum import MyDoublePendulumOA4
+from mt_baheti.src.refactored.doublependulum import MyDoublePendulumOA4
 from mlpro.rl import *
 from mlpro.oa.streams.tasks import NormalizerMinMax
-from refactored.boundarydetector import MyBoundaryDetector
+from mt_baheti.src.refactored.boundarydetector import MyBoundaryDetector
 from mlpro.rl.pool.policies.randomgenerator import RandomGenerator
 
 

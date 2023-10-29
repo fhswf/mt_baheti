@@ -9,12 +9,13 @@ from mlpro.bf.datasets.basics import *
 from dataset import SASDataset
 import torch.optim as opt
 import torch.nn as nn
+import pathlib as path
 
 # 2. Setting Path variables for training and offline dataset resources (CSV files in this case).
-path = os.curdir + os.sep + "data"
+save_path = os.curdir + os.sep + "data"
 
 # 2.1 Training Resource
-train_path = os.curdir + os.sep + "data" + os.sep + 'training_data'
+train_path = str(path.Path.cwd().parent.parent) + os.sep + "data" + os.sep + 'training_data'
 name_train_states = 'env_states.csv'
 name_train_actions = 'agent_actions.csv'
 
@@ -26,13 +27,6 @@ name_infer_actions = 'agent_actions.csv'
 # 3. Getting the state and action space of the Double Pendulum Environment
 dp = DoublePendulumS4()
 state_space, action_space = dp.setup_spaces()
-#
-# state_space.add_dim(Dimension('sin th1'))
-# state_space.add_dim(Dimension('cos th1'))
-# state_space.add_dim(Dimension('sin th2'))
-# state_space.add_dim(Dimension('cos th2'))
-# dims = state_space.get_dim_ids()
-# state_space = state_space.spawn([dims[4],dims[5],dims[1],dims[6],dims[7],dims[3]])
 
 dataset = SASDataset(p_path=train_path,
                      p_state_fname=name_train_states,
@@ -79,7 +73,7 @@ if __name__ == "__main__":
     num_epochs = 50
     logging = Log.C_LOG_WE
     visualize = True
-    path = str(Path.home())
+    save_path = str(Path.home())
     plotting = True
 else:
     # 2.2 Parameters for internal unit test
@@ -87,7 +81,7 @@ else:
     num_epochs = 2
     logging = Log.C_LOG_NOTHING
     visualize = False
-    path = None
+    save_path = None
     plotting = False
 
 # 6. Instantiating the Training Class
@@ -95,7 +89,7 @@ training = SLTraining(p_scenario_cls=MLPSLScenario,
                       p_cycle_limit=cycle_limit,
                       p_num_epoch=num_epochs,
                       p_logging=logging,
-                      p_path=path,
+                      p_path=save_path,
                       p_eval_freq=1,
                       p_collect_mappings=False,
                       p_plot_epoch_scores=True)
@@ -139,7 +133,7 @@ class InferenceScenario(SLScenario):
 
 
 # 11. Instantiating the scenario
-new_scenario = InferenceScenario(p_path=path,
+new_scenario = InferenceScenario(p_path=save_path,
                                  p_collect_mappings=True,
                                  p_cycle_limit=300,
                                  p_get_mapping_plots=True,
